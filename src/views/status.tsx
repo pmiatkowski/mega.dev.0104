@@ -1,4 +1,9 @@
-import type { Status } from '../status.js';
+import type { NightOnDisk, Status } from '../status.js';
+
+// One string so the separator reaches the HTML as written; — only for an unreadable night.
+function counts(n: NightOnDisk): string {
+  return `ok ${n.ok ?? '—'} · retry ${n.retry ?? '—'} · fail ${n.fail ?? '—'}`;
+}
 
 export function StatusBoard({ status }: { status: Status }) {
   return (
@@ -20,7 +25,9 @@ export function StatusBoard({ status }: { status: Status }) {
       ) : (
         <ul>
           {status.nights.map((n) => (
-            <li>{n}</li>
+            <li>
+              <a href={`/digest/${n.night}`}>{n.night}</a> <span class="mute">{counts(n)}</span>
+            </li>
           ))}
         </ul>
       )}
